@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<script src="https://kit.fontawesome.com/a7201b224e.js" crossorigin="anonymous"></script>
+	<link rel='stylesheet' href='assets/css/app.css' type="text/css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+	<script src='/socket.io/socket.io.js'></script>
+	<script type="module" src='assets/js/rtc.js'></script>
+	<script type="module" src='assets/js/events.js'></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/7.3.0/adapter.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js'></script>
+	<script src='https://cdn.rawgit.com/yahoo/xss-filters/master/dist/xss-filters.js'></script>
+	<script src='assets/js/autolink.js'></script>
+</head>
+<body>
+	<div id="custom_modal">
+		<div class="container-fluid" style="text-align: center;" id='room-create' hidden>
+			<div class="col-12 col-md-4 offset-md-4 mb-3">
+				<button id='create-room' class="btn btn-block rounded-0 btn-info">
+					Create Room
+				</button>
+			</div>
+			<div class="col-12 col-md-4 offset-md-4 mb-3" id='room-created'></div>
+		</div>
+		<button class="strt_cls">
+			<span class="bi bi-box-arrow-in-right"></span> Start Class
+		</button>
+	</div>
+	<div id="icons">
+		<span class="bi bi-fullscreen" id="fullscreen" title="Full Screen"></span>
+		<span class="bi bi-easel2" id="share-screen" title="Share Screen"></span>
+		<span class="bi bi-mic-fill" id="toggle-mute" title="Mute Mic"></span>
+		<span class="bi bi-box-arrow-right" id="exit" title="Leave Class"></span>
+	</div>
+	<video autoplay muted class="mirror-mode" volume="0" id="local"></video>
+	<div id="videos"></div>
+	<script>
+		function getCookie(cookieName) {
+			var name = cookieName + "=";
+			var decodedCookie = decodeURIComponent(document.cookie);
+			var cookieArray = decodedCookie.split(';');
+			for(var i = 0; i < cookieArray.length; i++) {
+				var cookie = cookieArray[i];
+				while (cookie.charAt(0) == ' ') {
+					cookie = cookie.substring(1);
+				}
+				if (cookie.indexOf(name) == 0) {
+					return cookie.substring(name.length, cookie.length);
+				}
+			}
+			return "";
+		}
+		if(getCookie('host') != null || getCookie('host') != '') {
+			setTimeout(() => {
+				try {
+					let elem = document.getElementById(getCookie('host'));
+					elem.classList.add('host');
+				}
+				catch(err) {}
+				clearTimeout(this);
+			}, 3000);
+		}
+		function requestFullscreen() {
+			var iframeElement = document.documentElement;
+			if (iframeElement.requestFullscreen) {
+				iframeElement.requestFullscreen();
+			} else if (iframeElement.mozRequestFullScreen) {
+				iframeElement.mozRequestFullScreen();
+			} else if (iframeElement.webkitRequestFullscreen) {
+				iframeElement.webkitRequestFullscreen();
+			} else if (iframeElement.msRequestFullscreen) {
+				iframeElement.msRequestFullscreen();
+			}
+		}
+		let fulscrn = document.getElementById('fullscreen');
+		document.addEventListener('fullscreenchange', () => {
+			if(document.fullscreenElement) {
+				fulscrn.classList.replace('bi-fullscreen', 'bi-fullscreen-exit');
+			} else {
+				fulscrn.classList.replace('bi-fullscreen-exit', 'bi-fullscreen');
+			}
+		});
+		document.addEventListener('keyup', (e) => {
+			if(e.key == 'F11') {
+				fulscrn.click();
+			}
+		});
+		fulscrn.addEventListener('click', () => {
+			if(document.fullscreenElement) {
+				document.exitFullscreen();
+			} else {
+				requestFullscreen();
+			}
+		});
+		document.getElementById('exit').addEventListener('click', () => {
+			location.replace('http://127.0.0.1/kcp/ended.html');
+		})
+	</script>
+</body>
+</html>

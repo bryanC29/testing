@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    </head>
+    <body>
+        <div id="custom_modal">
+            <button class="strt_cls" id="">
+                <span class="bi bi-box-arrow-in-right"></span>
+                Start Class
+            </button>
+        </div>
+        
+        <div id="icons">
+            <span class="bi bi-fullscreen" id="fullscreen" title="Full Screen"></span>
+            <span class="bi bi-easel2" id="sharescreen" title="Share Screen"></span>
+            <span class="bi bi-mic-fill" id="mute" title="Mute Mic"></span>
+            <span class="bi bi-box-arrow-right" id="exit" title="Leave Class"></span>
+        </div>
+        
+        <div id="local"></div>
+
+        <div id="host_videos">
+            <div class="video_remote"></div>
+            <div class="video_remote"></div>
+            <div class="video_remote"></div>
+            <div class="video_remote"></div>
+            <div class="video_remote"></div>
+            <div class="video_remote"></div>
+            <div class="video_remote"></div>
+            <div class="video_remote"></div>
+            <div class="video_remote"></div>
+            <div class="video_remote"></div>
+            <div class="video_remote"></div>
+            <div class="video_remote"></div>
+            <div class="video_remote"></div>
+            <div class="video_remote"></div>
+            <div class="video_remote"></div>
+            <div class="video_remote"></div>
+            <div class="video_remote"></div>
+            <div class="video_remote"></div>
+            <div class="video_remote"></div>
+            <div class="video_remote host"></div>
+        </div>
+        
+        <script>
+            function requestFullscreen() {
+                var iframeElement = document.documentElement;
+                if (iframeElement.requestFullscreen) {
+                    iframeElement.requestFullscreen();
+                } else if (iframeElement.mozRequestFullScreen) {
+                    iframeElement.mozRequestFullScreen();
+                } else if (iframeElement.webkitRequestFullscreen) {
+                    iframeElement.webkitRequestFullscreen();
+                } else if (iframeElement.msRequestFullscreen) {
+                    iframeElement.msRequestFullscreen();
+                }
+            }
+
+            let fulscrn = document.getElementById('fullscreen');
+            let sharescreen = document.getElementById('sharescreen');
+            let mute = document.getElementById('mute');
+            
+            document.addEventListener('fullscreenchange', () => {
+                if(document.fullscreenElement) {
+                    fulscrn.classList.replace('bi-fullscreen', 'bi-fullscreen-exit');
+                } else {
+                    fulscrn.classList.replace('bi-fullscreen-exit', 'bi-fullscreen');
+                }
+            });
+            
+            fulscrn.addEventListener('click', () => {
+                if(document.fullscreenElement) {
+                    document.exitFullscreen();
+                } else {
+                    requestFullscreen();
+                }
+            });
+
+            mute.addEventListener('click', () => {
+                if(mute.classList.contains('bi-mic-mute-fill')) {
+                    mute.classList.replace('bi-mic-mute-fill', 'bi-mic-fill');
+                } else {
+                    mute.classList.replace('bi-mic-fill', 'bi-mic-mute-fill');
+                }
+            });
+
+            sharescreen.addEventListener('click', () => {
+                if(sharescreen.classList.contains('bi-easel2')) {
+                    sharescreen.classList.replace('bi-easel2', 'bi-camera-video-fill');
+                } else {
+                    sharescreen.classList.replace('bi-camera-video-fill', 'bi-easel2');
+                }
+            });
+
+            document.querySelector('.strt_cls').id = 'host';
+        </script>
+    </body>
+    </html>
